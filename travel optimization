@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int  INF = 1e9;
+int n,k,num;
+int a[1001];
+int b[1001];
+int dp[1001][100];
+// remember chote number ko memory location me pehle rakhne ki koshish karo
+int rec(int level,int num){
+    //pruning
+    if ( level < 1 ) return INF;
+    //base case
+    if( level == 1 && num == 0 ) {
+        return 0;
+    }
+    else if(level==1) return INF;
+    //cache check
+
+    if(dp[level][num] != - 1 ) return dp[level][num];
+
+    //transition
+
+    int ans=rec(level-1,num) + b[level-1];
+
+    // save and return
+
+    if(num>0) {
+
+        for(int j=1;j<=k;j++){
+
+        if(level-j>=1) ans = min ( ans , rec (level-j , num-1) + a [level-j] + a[level]);
+    }
+    }
+
+    return dp[level][num] = ans ;
+
+}
+void solve(){
+    cin>>n>>k>>num;
+    for(int i=1;i<=n;i++){
+        cin>>a[i];
+    }
+
+    for(int i=1;i<n;i++){
+        cin>>b[i];
+    }
+
+    memset(dp,-1,sizeof(dp));
+
+    cout<<rec(n,num)<<"\n";
+}
+signed main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    solve();
+}
